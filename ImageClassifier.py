@@ -93,6 +93,7 @@ def get_batch(image, label, image_W, image_H, batch_size, capacity):
     image_batch, label_batch = tf.train.batch([image, label], batch_size=batch_size, num_threads=8, capacity=capacity)
 
     label_batch = tf.reshape(label_batch, [batch_size])
+
     return image_batch, label_batch
 
 '''
@@ -230,12 +231,12 @@ def evaluation(logits, labels):
 训练
 '''
 N_CLASSES = 5
-IMG_W = 64
-IMG_H = 64
+IMG_W = 32
+IMG_H = 32
 BATCH_SIZE = 50
-CAPACITY = 200.0
+CAPACITY = 64.0
 MAX_STEP = 2000
-learning_rate = 0.01
+learning_rate = 0.003
 
 
 def run_training():
@@ -245,9 +246,6 @@ def run_training():
                                                IMG_H,
                                                BATCH_SIZE,
                                                CAPACITY)
-    # 查看前10张训练集
-    view_images(train_batch, train_label_batch, 10)
-
     train_logits = inference(train_batch, BATCH_SIZE, N_CLASSES)
     train_loss = losses(train_logits, train_label_batch)
     train_op = trainning(train_loss, learning_rate)
