@@ -81,14 +81,7 @@ def get_batch(image, label, image_W, image_H, batch_size, capacity):
     image = tf.image.decode_jpeg(image_contents, channels=3)
 
     image = tf.image.resize_image_with_crop_or_pad(image,image_W,image_H)
-    # image = tf.image.resize_image_with_pad(image, image_W, image_H)
     image = tf.image.per_image_standardization(image)
-
-    #     dataset = tf.data.Dataset.from_tensor_slices(image,label)
-    #     dataset.batch(batch_size)
-    #     dataset.capacity(capacity)
-    #     iterator =  dataset.make_initializable_iterator()
-    #     image_batch,label_batch = iterator.
 
     image_batch, label_batch = tf.train.batch([image, label], batch_size=batch_size, num_threads=8, capacity=capacity)
 
